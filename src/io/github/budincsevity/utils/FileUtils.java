@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.Month;
 
 public class FileUtils {
@@ -30,7 +31,7 @@ public class FileUtils {
 
     public static void writeResponseToCsv(TimeMachineResponse timeMachineResponse) {
         Path outputPath = Paths.get(Constants.CSV_FILENAME);
-        try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
             String summary = timeMachineResponse.hourly.summary;
 
             for (Data data : timeMachineResponse.hourly.data) {
@@ -39,6 +40,18 @@ public class FileUtils {
                 writer.write(line);
                 writer.newLine();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeTheHeader() {
+        Path outputPath = Paths.get(Constants.CSV_FILENAME);
+        try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+
+            writer.write(Data.getFieldNamesCSVString());
+            writer.newLine();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,8 @@
 package io.github.budincsevity.services;
 
 import com.google.gson.Gson;
-import io.github.budincsevity.utils.FileUtils;
 import io.github.budincsevity.entities.TimeMachineResponse;
+import io.github.budincsevity.utils.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +15,9 @@ import static io.github.budincsevity.utils.Constants.RESPONSES;
 public class WeatherMapperToCsv {
 
     public void run() throws IOException {
+
+        FileUtils.writeTheHeader();
+
         Files.find(Paths.get(RESPONSES),
                 Integer.MAX_VALUE,
                 (filePath, fileAttr) -> fileAttr.isRegularFile())
@@ -31,6 +34,4 @@ public class WeatherMapperToCsv {
             e.printStackTrace();
         }
     }
-
-
 }
