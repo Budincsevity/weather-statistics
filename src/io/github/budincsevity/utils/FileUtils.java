@@ -32,7 +32,7 @@ public class FileUtils {
     public static void writeResponseToCsv(TimeMachineResponse timeMachineResponse) {
         Path outputPath = Paths.get(Constants.CSV_FILENAME);
         try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
-            String summary = timeMachineResponse.hourly.summary;
+            String summary = timeMachineResponse.hourly.summary.replaceAll(",","");
 
             for (Data data : timeMachineResponse.hourly.data) {
                 String line = Joiner.on(",").join(data.asCommaSeparatedString(), summary);
